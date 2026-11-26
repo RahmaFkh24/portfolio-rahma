@@ -4,8 +4,9 @@ import { Reveal, CountUp } from "@/components/portfolio/reveal";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUpRight, Award, BadgeCheck, Brain, Briefcase, Download, Github, Languages, Linkedin, Copy, FileText, GraduationCap, Mail, MapPin, Moon, Phone, Sun } from "lucide-react";
-import cv from "@/assets/cv.pdf.asset.json";
 import { githubUser, profile, projects, experience, education, skillGroups, languages, certifications, certSlug, marquee, glance } from "@/lib/portfolio-data";
+
+const cvUrl = `${import.meta.env.BASE_URL}Fakhfekh_Rahma-AIEngineer.pdf`;
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -81,8 +82,8 @@ function Index() {
             </div>
             <div className="fade-up mt-8 flex flex-wrap gap-3" style={{ animationDelay: ".55s" }}>
               <button onClick={goViews} className="inline-flex items-center gap-2.5 rounded-full bg-accent px-5 py-3 font-medium text-accent-foreground transition hover:opacity-90">See my projects <ArrowDown size={16} /></button>
-              <a href={cv.url} target="_blank" rel="noopener" className="inline-flex items-center gap-2.5 rounded-full border border-input px-5 py-3 font-medium transition hover:border-foreground"><FileText size={16} />View my CV <ArrowUpRight size={15} /></a>
-              <a href={cv.url} download="Rahma_Fakhfekh_CV.pdf" aria-label="Download CV" className="grid h-[50px] w-[50px] place-items-center rounded-full border border-input transition hover:border-foreground"><Download size={17} /></a>
+              <a href={cvUrl} target="_blank" rel="noopener" className="inline-flex items-center gap-2.5 rounded-full border border-input px-5 py-3 font-medium transition hover:border-foreground"><FileText size={16} />View my CV <ArrowUpRight size={15} /></a>
+              <a href={cvUrl} download="Rahma_Fakhfekh_CV.pdf" aria-label="Download CV" className="grid h-[50px] w-[50px] place-items-center rounded-full border border-input transition hover:border-foreground"><Download size={17} /></a>
             </div>
           </div>
           <Fan />
@@ -131,24 +132,26 @@ function Index() {
                 ))}
               </div>
               <div className="grid gap-14">
-                {shown.map((p) => { const I = icons[p.icon]; return (
-                  <Reveal key={p.title}><Link to="/projects/$slug" params={{ slug: p.slug }} className="group block">
-                    <div className="grid-bg relative grid min-h-[420px] items-center gap-8 overflow-hidden rounded-[var(--radius)] p-8 text-accent-foreground transition-transform duration-700 group-hover:scale-[0.985] md:grid-cols-2 md:p-14" style={{ background: p.bg }}>
-                      <div className="absolute left-4 top-4 flex flex-wrap gap-1.5">{p.tags.map((t) => <span key={t} className="rounded-full bg-card/90 px-2.5 py-1 text-xs text-card-foreground">{t}</span>)}</div>
-                      <div className="mt-8 md:mt-0">
-                        <div className="flex items-center gap-2.5 text-sm font-bold uppercase tracking-[0.15em] opacity-90"><span className="grid h-7 w-7 place-items-center rounded-md bg-card/20"><I size={16} /></span>{p.cat}</div>
-                        <h3 className="mt-5 text-[clamp(40px,5.5vw,68px)] font-bold leading-[0.95] tracking-[-0.045em]">{p.title}</h3>
-                        <p className="mt-5 max-w-sm text-lg opacity-80">{p.tagline}</p>
+                {shown.map((p) => {
+                  const I = icons[p.icon]; return (
+                    <Reveal key={p.title}><Link to="/projects/$slug" params={{ slug: p.slug }} className="group block">
+                      <div className="grid-bg relative grid min-h-[420px] items-center gap-8 overflow-hidden rounded-[var(--radius)] p-8 text-accent-foreground transition-transform duration-700 group-hover:scale-[0.985] md:grid-cols-2 md:p-14" style={{ background: p.bg }}>
+                        <div className="absolute left-4 top-4 flex flex-wrap gap-1.5">{p.tags.map((t) => <span key={t} className="rounded-full bg-card/90 px-2.5 py-1 text-xs text-card-foreground">{t}</span>)}</div>
+                        <div className="mt-8 md:mt-0">
+                          <div className="flex items-center gap-2.5 text-sm font-bold uppercase tracking-[0.15em] opacity-90"><span className="grid h-7 w-7 place-items-center rounded-md bg-card/20"><I size={16} /></span>{p.cat}</div>
+                          <h3 className="mt-5 text-[clamp(40px,5.5vw,68px)] font-bold leading-[0.95] tracking-[-0.045em]">{p.title}</h3>
+                          <p className="mt-5 max-w-sm text-lg opacity-80">{p.tagline}</p>
+                        </div>
+                        <div className="transition-transform duration-700 group-hover:-translate-y-2 group-hover:scale-[1.03]"><Mock kind={p.icon} /></div>
+                        <span className="absolute bottom-6 right-6 inline-flex translate-y-3 items-center gap-2 rounded-full bg-card px-4 py-2 text-sm font-medium text-card-foreground opacity-0 transition duration-500 group-hover:translate-y-0 group-hover:opacity-100">Read the case study <ArrowUpRight size={15} /></span>
                       </div>
-                      <div className="transition-transform duration-700 group-hover:-translate-y-2 group-hover:scale-[1.03]"><Mock kind={p.icon} /></div>
-                      <span className="absolute bottom-6 right-6 inline-flex translate-y-3 items-center gap-2 rounded-full bg-card px-4 py-2 text-sm font-medium text-card-foreground opacity-0 transition duration-500 group-hover:translate-y-0 group-hover:opacity-100">Read the case study <ArrowUpRight size={15} /></span>
-                    </div>
-                    <div className="mt-4 flex items-start justify-between gap-6 px-1">
-                      <div><h4 className="text-xl font-medium transition-colors group-hover:text-accent">{p.title} <span className="text-muted-foreground">· {p.org}</span></h4><p className="mt-1 max-w-3xl text-muted-foreground">{p.desc}</p></div>
-                      <span className="text-sm text-muted-foreground">{p.year}</span>
-                    </div>
-                  </Link></Reveal>
-                ); })}
+                      <div className="mt-4 flex items-start justify-between gap-6 px-1">
+                        <div><h4 className="text-xl font-medium transition-colors group-hover:text-accent">{p.title} <span className="text-muted-foreground">· {p.org}</span></h4><p className="mt-1 max-w-3xl text-muted-foreground">{p.desc}</p></div>
+                        <span className="text-sm text-muted-foreground">{p.year}</span>
+                      </div>
+                    </Link></Reveal>
+                  );
+                })}
               </div>
               <GithubLive />
             </section>
@@ -176,6 +179,15 @@ function Index() {
                   <Reveal key={c.t} delay={i * 80}>
                     <Link to="/certifications/$slug" params={{ slug: certSlug(c) }} className="group relative block h-full overflow-hidden rounded-[var(--radius)] border border-border bg-card p-7 shadow-card transition duration-500 hover:-translate-y-1.5 hover:border-accent">
                       <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-accent-soft transition-transform duration-700 group-hover:scale-150" />
+                      {(c.image || c.document) && (
+                        <div className="relative mb-6 grid aspect-[4/3] place-items-center overflow-hidden rounded-xl border border-border bg-background">
+                          {c.image ? (
+                            <img src={c.image} alt={`${c.t} certificate`} loading="lazy" className="h-full w-full object-contain" />
+                          ) : (
+                            <div className="text-center text-muted-foreground"><FileText className="mx-auto text-accent" size={32} /><p className="mt-2 text-sm font-medium">PDF certificate</p></div>
+                          )}
+                        </div>
+                      )}
                       <div className="relative flex items-center justify-between">
                         <span className="grid h-12 w-12 place-items-center rounded-2xl bg-accent text-accent-foreground"><Award size={22} /></span>
                         <span className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">{c.cat}</span>
@@ -231,7 +243,7 @@ function Index() {
                     ))}
                   </Block>
                   <Block title="Interests"><div className="flex flex-wrap gap-2">{profile.interests.map((s) => <span key={s} className="rounded-full border border-border bg-card px-4 py-2 text-sm">{s}</span>)}</div></Block>
-                  <a href={cv.url} target="_blank" rel="noopener" className="inline-flex items-center gap-2.5 rounded-full border border-input px-5 py-3 font-medium transition hover:border-foreground">View my full CV <ArrowUpRight size={15} /></a>
+                  <a href={cvUrl} target="_blank" rel="noopener" className="inline-flex items-center gap-2.5 rounded-full border border-input px-5 py-3 font-medium transition hover:border-foreground">View my full CV <ArrowUpRight size={15} /></a>
                 </aside>
               </div>
             </section>
